@@ -1,0 +1,20 @@
+void HelloWorld() {
+    Sleep(30000);//TODO replace this with when game loaded
+    uintptr_t moduleBase = reinterpret_cast<uintptr_t>(GetModuleHandle(NULL));
+    GameWorldClass* gameWorld = reinterpret_cast<GameWorldClass*>(moduleBase + 0x2133040);
+    using GameWorldOffset = void(*)(GameWorldClass*, bool);
+    GameWorldOffset togglePause = reinterpret_cast<GameWorldOffset>(moduleBase + 0x7876A0);//0x7876A0//0x51686
+    //6023F0
+    // 
+    //gameWorld->gameSpeed = 20.0f;
+
+    // Define the function pointer type for togglePause, which takes GameWorldClass* (this) and bool
+
+
+    // Call togglePause with the gameWorld instance (this pointer in RCX)
+    togglePause(gameWorld, true);  // Pause the game
+    //MessageBoxA(NULL, "Game Paused!", "Status", MB_OK | MB_ICONINFORMATION);
+
+    Sleep(2000);
+    togglePause(gameWorld, false); // Unpause the game
+  

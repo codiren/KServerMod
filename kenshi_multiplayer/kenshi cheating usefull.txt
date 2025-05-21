@@ -1,0 +1,89 @@
+code that reads currently selected character human(found by backtracking on current skill level float)
+kenshi_GOG_x64.exe+5D8F33, rsi has character address
+moving character to other squad
+kenshi_GOG_x64.exe+D1C63
+swapping characters
+kenshi_GOG_x64.exe+7961BC 
+when character is walking
+kenshi_GOG_x64.exe+148783
+get all characters
+kenshi.exe+65F6C7
+320 position obj
+300 character class
+1F0 charstats
+1F8 animation classhuman
+
+moveItems kenshi.exe+7490E5 - 44 89 AF DC000000     - mov [rdi+000000DC],r13d  rdi item, rbx inventorySection
+kenshi.exe+715FE0 - FF 50 18              - call qword ptr [rax+18] call out          changing r8 and r9 changes real position
+
+
+
+kenshi.exe+746F1C - FF 50 60              - call qword ptr [rax+60]    virtual void _addToList(Item*);// RVA = 0x5CD620// vtable offset = 0x60
+
+
+
+kenshi.exe+714A33 - E8 B3EE93FF           - call kenshi.exe+538EB   item constructor
+kenshi.exe+713C84 - E8 3F3493FF           - call kenshi.exe+470C8   item constructor more inner    item(item*, hand)
+kenshi.exe+57BE9E - E8 0E11ABFF           - call kenshi.exe+2CFB1   item constructor more more inner
+kenshi.exe+75FA2C - 48 8D 05 D5CFFA00     - lea rax,[kenshi.exe+170CA08] { (7FF67E1D0441) }   item constructor center
+
+kenshi.exe+75F4C4 - E8 6F038DFF           - call kenshi.exe+2F838 this function deletes smth
+
+kenshi.exe+71374C - E8 9F1292FF           - call kenshi.exe+349F0  item* getItem(inventorySection, int x, int y)
+
+kenshi.exe+713AE8 - FF 90 A8020000        - call qword ptr [rax+000002A8]  hand* getHand(item*)
+
+kenshi.exe+713C84 - E8 3F3493FF           - call kenshi.exe+470C8 item* doSmthAndGetDifferentItem(some const, item*)
+
+
+
+game struct
+kenshi_GOG_x64.exe+2133040
+
+
+
+super character struct
+0 - pointer to pos holder
+-- +20 vector3 floats   (positions divided by 10!)
+88 - pointer character human struct
+-- +10 faction pointer
+-- +40 gamedata pointer
+-- -- +58 stringID
+-- +650 AI pointer
+-- -- +20 AI task_system pointer
+-- -- -- +80 task_move double pointer
+-- -- -- +1b0 bool is idle
+-- +658 active platoon pointer
+
+
+task_move
++58 movevector3
+
+char movement vtable kenshi.exe+016FB998   //scan for this to find all classes
+char human vtable kenshi.exe+016F1558      // used by kenshi.exe+6EFF90 
+
+
+set task to aimless kenshi.exe+50D212 
+set task to walk to point kenshi.exe+599490, kenshi.exe+50802A, kenshi.exe+508033, kenshi.exe+51028D 
+
+
+scan for kenshi.exe+016FB998
+add 300, dereference, add 18, print this string[20]
+
+
+//getbuildingshook draw buildings? kenshi.exe+9FAA5F - 49 8B CC              - mov rcx,r12
+building
++10 //faction pointer
++164 float building_progress //kenshi.exe+55940C - 89 96 64010000        - mov [rsi+00000164],edx
++1F8 townbuildingsmananger
+-- +A8 town
+-- -- +10 faction
+-- -- +18 name
+
+
+
+gameData
++28 name
+
+CharBody
++100 GameDataCopyStandalone

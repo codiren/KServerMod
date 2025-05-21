@@ -1,0 +1,15 @@
+alloc(newmem,2048)
+
+newmem:
+  sub rsp,28
+
+  mov rdx,0
+  mov rcx,kenshi_GOG_x64.exe+2133040
+  call kenshi_GOG_x64.exe+7876A0
+
+  add rsp,28
+  xor eax,eax
+  ret
+
+createthread(newmem)
+dealloc(newmem)

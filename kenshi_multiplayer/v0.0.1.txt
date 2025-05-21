@@ -1,0 +1,60 @@
+#include "pch.h"
+#include <windows.h>
+#include <iostream>
+
+struct GameWorldClass {
+    char padding1[0x700];
+    float gameSpeed;     // Member at offset 0x700
+    char padding2[0x1B5];
+    bool paused;         // Member at offset 0x8B9
+};
+
+void spawn_console() {
+    AllocConsole();
+
+    FILE* stream;
+    freopen_s(&stream, "CONOUT$", "w", stdout);
+    freopen_s(&stream, "CONIN$", "r", stdin);
+
+    std::cout << "[Console Ready] Enter new game speed:\n";
+}
+
+
+void HelloWorld() {
+    spawn_console();  // Open a console window
+
+    uintptr_t moduleBase = reinterpret_cast<uintptr_t>(GetModuleHandle(NULL));
+    GameWorldClass* gameWorld = reinterpret_cast<GameWorldClass*>(moduleBase + 0x2133040);
+
+    if (!gameWorld) {
+        std::cerr << "Failed to locate GameWorldClass in memory!\n";
+        return;
+    }
+
+    float newSpeed;
+    while (true) {
+        std::cout << "Set game speed: ";
+        std::cin >> newSpeed;
+
+        if (std::cin.fail()) {
+            std::cin.clear(); // Clear error flags
+            std::cin.ignore(10000, '\n'); // Ignore invalid input
+            std::cout << "Invalid input! Please enter a number.\n";
+            continue;
+        }
+
+        gameWorld->gameSpeed = newSpeed;
+        std::cout << "Game speed set to: " << gameWorld->gameSpeed << "\n";
+    }
+}
+
+void dllmain() {
+    HelloWorld();
+}
+DWORD WINAPI threadWrapper(LPVOID param) {
+    dllmain();
+    return 0;
+}
+extern "C" void __declspec(dllexport) dllStartPlugin(void) {
+    CreateThread(NULL, 0, threadWrapper, 0, 0, 0);
+}
