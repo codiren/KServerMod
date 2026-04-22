@@ -1,0 +1,19 @@
+setBlockMode(testChar, true);
+bool newBlock = getBlockMode(testChar);
+ok so use those here
+
+ok i so each character needs to have network owner field
+this must be visible in server ui
+and the field is faction/player name
+i guess algoritm is First Contact
+i guess
+
+for now that field only does this: if im not the network owner, then set block to true on those characters(first check if has block or not, so would not set block to true if already was true)
+
+network owner is set from server world state i guess and ends when combat has ended??
+also client never sets ownership change in world state, server assigns them by its own detection
+ but network owner == actual owner should also be possible
+ 
+ dont use signals anywhere
+
+make it so it bypasses the network owner field bypasses this restriction and get applied from the server

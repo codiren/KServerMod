@@ -1,0 +1,7 @@
+/help
+/test
+/help
+/test
+/help
+client
+/client
